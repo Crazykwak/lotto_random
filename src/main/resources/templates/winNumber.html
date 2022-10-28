@@ -1,0 +1,31 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lotto Number Maker</title>
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="container" th:object="${result}">
+    <div class="menu-name">
+        <h2>로또 단일 회차 당첨 번호 조회</h2>
+    </div>
+
+    <ul>
+        <li> 총 판매 금액 : <span th:text="*{totalSellAmount}" > 100 </span> </li>
+        <li> 1등 당청금 : <span th:text="*{firstWinAmount}"> 100 </span> </li>
+        <li> 날짜 : <span th:text="*{drawNoDate}"> 2022-10-28 </span> </li>
+        <li> 회차 : <span th:text="*{drawNo}"></span> </li>
+        <li> 당첨번호 1 : <span th:text="*{winNumber1}"></span> </li>
+        <li> 당첨번호 2 : <span th:text="*{winNumber2}"></span> </li>
+        <li> 당첨번호 3 : <span th:text="*{winNumber3}"></span></li>
+        <li> 당첨번호 4 : <span th:text="*{winNumber4}"></span></li>
+        <li> 당첨번호 5 : <span th:text="*{winNumber5}"></span></li>
+        <li> 당첨번호 6 : <span th:text="*{winNumber6}"></span></li>
+        <li> 보너스 번호 : <span th:text="*{bonusNumber}"></span></li>
+    </ul>
+</div>
+</body>
+</html>
