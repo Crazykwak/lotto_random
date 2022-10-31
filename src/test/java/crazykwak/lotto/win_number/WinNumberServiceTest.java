@@ -33,7 +33,6 @@ class WinNumberServiceTest {
     WinNumberRepository winNumberRepository;
 
     @Test
-    @Rollback(value = false)
     void saveWinNumberForStart() {
 
         String baseDateString = "2022-10-29";
@@ -54,7 +53,6 @@ class WinNumberServiceTest {
 
         assertThat(after).isEqualTo(latestDrawNo);
         assertThat(after).isGreaterThan(before);
-
 
     }
 }
