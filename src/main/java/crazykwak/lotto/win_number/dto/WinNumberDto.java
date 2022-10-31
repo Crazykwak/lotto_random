@@ -42,8 +42,10 @@ public class WinNumberDto {
     @JsonProperty("bnusNo")
     private int bonusNumber;
 
+    private String returnValue;
+
     @Builder
-    public WinNumberDto(long totalSellAmount, long firstWinAmount, LocalDate drawNoDate, long drawNo, int winNumber1, int winNumber2, int winNumber3, int winNumber4, int winNumber5, int winNumber6, int bonusNumber) {
+    public WinNumberDto(long totalSellAmount, long firstWinAmount, LocalDate drawNoDate, long drawNo, int winNumber1, int winNumber2, int winNumber3, int winNumber4, int winNumber5, int winNumber6, int bonusNumber, String returnValue) {
         this.totalSellAmount = totalSellAmount;
         this.firstWinAmount = firstWinAmount;
         this.drawNoDate = drawNoDate;
@@ -55,5 +57,6 @@ public class WinNumberDto {
         this.winNumber5 = winNumber5;
         this.winNumber6 = winNumber6;
         this.bonusNumber = bonusNumber;
+        this.returnValue = returnValue;
     }
 }
