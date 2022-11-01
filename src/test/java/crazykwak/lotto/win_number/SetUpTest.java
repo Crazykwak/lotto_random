@@ -1,33 +1,27 @@
 package crazykwak.lotto.win_number;
 
-import org.assertj.core.api.Assertions;
+import crazykwak.lotto.configure.SetUp;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class WinNumberServiceTest {
+class SetUpTest {
 
-    Logger log = (Logger) LoggerFactory.getLogger(WinNumberServiceTest.class);
+    Logger log = (Logger) LoggerFactory.getLogger(SetUpTest.class);
 
     @Autowired
-    WinNumberService winNumberService;
+    SetUp setUp;
 
     @Autowired
     WinNumberRepository winNumberRepository;
@@ -46,7 +40,7 @@ class WinNumberServiceTest {
         List<WinNumber> beforeRepositorySize = winNumberRepository.findAll();
 
         int before = beforeRepositorySize.size();
-        winNumberService.saveWinNumberForStart();
+        setUp.saveWinNumberForStart();
 
         List<WinNumber> afterRepositorySize = winNumberRepository.findAll();
         int after = afterRepositorySize.size();
