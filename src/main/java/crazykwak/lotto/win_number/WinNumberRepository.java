@@ -9,4 +9,6 @@ public interface WinNumberRepository extends JpaRepository<WinNumber, Long> {
 
     @Query("select w from WinNumber w")
     Page<WinNumber> findLastIndex(Pageable pageable);
+
+    WinNumber findByDrawNo(long drawNo);
 }

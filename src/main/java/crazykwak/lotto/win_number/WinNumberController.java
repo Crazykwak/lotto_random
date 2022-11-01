@@ -1,4 +1,4 @@
-package crazykwak.lotto.outer_api;
+package crazykwak.lotto.win_number;
 
 import crazykwak.lotto.win_number.dto.WinNumberDto;
 import lombok.RequiredArgsConstructor;
@@ -17,21 +17,16 @@ import java.net.URI;
 @RequiredArgsConstructor
 @RequestMapping
 @Slf4j
-public class DhLotteryApiController {
+public class WinNumberController {
 
-    private final RestTemplate restTemplate;
+    private final WinNumberRepository winNumberRepository;
+    private final WinNumberMapper mapper;
 
     @GetMapping("/win-number/{drawNo}")
-    public String getLottoNumber(@PathVariable String drawNo,
+    public String getLottoNumber(@PathVariable long drawNo,
                                  Model model) {
 
-        URI uri = UriComponentsBuilder.fromUriString("https://www.dhlottery.co.kr/common.do")
-                .queryParam("method","getLottoNumber")
-                .queryParam("drwNo", drawNo)
-                .build()
-                .toUri();
-
-        WinNumberDto winNumberDto = restTemplate.getForObject(uri, WinNumberDto.class);
+        WinNumberDto winNumberDto = mapper.WinNumberToWinNumberDto(winNumberRepository.findByDrawNo(drawNo));
 
         model.addAttribute("result", winNumberDto);
 

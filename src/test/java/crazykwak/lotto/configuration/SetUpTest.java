@@ -1,6 +1,8 @@
-package crazykwak.lotto.win_number;
+package crazykwak.lotto.configuration;
 
 import crazykwak.lotto.configure.SetUp;
+import crazykwak.lotto.win_number.WinNumber;
+import crazykwak.lotto.win_number.WinNumberRepository;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
