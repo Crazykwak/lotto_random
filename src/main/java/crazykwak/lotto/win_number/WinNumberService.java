@@ -27,7 +27,7 @@ public class WinNumberService {
         Page<WinNumber> find = winNumberRepository.findLastIndex(pageable);
         List<WinNumber> content = find.getContent();
 
-        int[] countNumber = new int[45];
+        int[] countNumbers = new int[45];
 
         content.stream()
                 .forEach(e -> {
@@ -38,21 +38,21 @@ public class WinNumberService {
                     int winNumber5 = e.getWinNumber5() - 1;
                     int winNumber6 = e.getWinNumber6() - 1;
 
-                    countNumber[winNumber1]++;
-                    countNumber[winNumber2]++;
-                    countNumber[winNumber3]++;
-                    countNumber[winNumber4]++;
-                    countNumber[winNumber5]++;
-                    countNumber[winNumber6]++;
+                    countNumbers[winNumber1]++;
+                    countNumbers[winNumber2]++;
+                    countNumbers[winNumber3]++;
+                    countNumbers[winNumber4]++;
+                    countNumbers[winNumber5]++;
+                    countNumbers[winNumber6]++;
                 });
 
-        int max = Arrays.stream(countNumber).max().getAsInt();
-        int min = Arrays.stream(countNumber).min().getAsInt();
+        int max = Arrays.stream(countNumbers).max().getAsInt();
+        int min = Arrays.stream(countNumbers).min().getAsInt();
 
-        int[] mostNumbers = Arrays.stream(countNumber).filter(e -> e == max).toArray();
-        int[] leastNumbers = Arrays.stream(countNumber).filter(e -> e == min).toArray();
+        int[] mostNumbers = Arrays.stream(countNumbers).filter(e -> e == max).toArray();
+        int[] leastNumbers = Arrays.stream(countNumbers).filter(e -> e == min).toArray();
 
-        return new HistoryNumber(mostNumbers, leastNumbers);
+        return new HistoryNumber(mostNumbers, leastNumbers, countNumbers);
     }
 
 

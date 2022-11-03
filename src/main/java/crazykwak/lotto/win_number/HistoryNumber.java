@@ -13,5 +13,6 @@ public class HistoryNumber {
 
     int[] mostNumbers;
     int[] leastNumbers;
+    int[] allNumbers;
 
 }
