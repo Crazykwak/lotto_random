@@ -2,9 +2,12 @@ package crazykwak.lotto.win_number;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -12,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class WinNumberServiceTest {
+
+    Logger log = LoggerFactory.getLogger(WinNumberServiceTest.class);
 
     @Autowired
     WinNumberRepository winNumberRepository;
@@ -49,6 +54,7 @@ class WinNumberServiceTest {
 
         //then
         assertThat(count).isEqualTo(allNumbers);
+        log.info("result = {}", Arrays.toString(allNumbers));
 
     }
 
