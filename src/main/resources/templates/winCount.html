@@ -1,0 +1,22 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lotto Number Maker</title>
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="container" th:object="${result}">
+    <div class="menu-name">
+        <h2>로또 단일 회차 당첨 번호 조회</h2>
+    </div>
+
+    <ul th:each="allNumber : ${result.getAllNumbers()}">
+        <li> <span th:text="${allNumberStat.index} + 1 + ' : ' + ${allNumber} + '회'"> </span> </li>
+    </ul>
+
+</div>
+</body>
+</html>
