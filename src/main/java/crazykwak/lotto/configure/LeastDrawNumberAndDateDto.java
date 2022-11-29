@@ -1,4 +1,4 @@
-package crazykwak.lotto.win_number.dto;
+package crazykwak.lotto.configure;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

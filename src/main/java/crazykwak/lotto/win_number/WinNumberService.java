@@ -1,7 +1,7 @@
 package crazykwak.lotto.win_number;
 
 import crazykwak.lotto.configure.SetUp;
-import crazykwak.lotto.win_number.dto.LeastDrawNumberAndDateDto;
+import crazykwak.lotto.configure.LeastDrawNumberAndDateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

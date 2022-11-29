@@ -1,6 +1,6 @@
 package crazykwak.lotto.win_number;
 
-import crazykwak.lotto.win_number.dto.LeastDrawNumberAndDateDto;
+import crazykwak.lotto.configure.LeastDrawNumberAndDateDto;
 import crazykwak.lotto.win_number.dto.WinNumberDto;
 import crazykwak.lotto.win_number.dto.WinNumberSearchDto;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,6 +21,7 @@ public class WinNumberController {
     private final WinNumberRepository winNumberRepository;
     private final WinNumberService winNumberService;
     private final WinNumberMapper mapper;
+    private final LeastDrawNumberAndDateDto leastDrawNumberAndDateDto;
 
     @GetMapping("/win-number/{drawNo}")
     public String getLottoNumber(@PathVariable long drawNo,
@@ -36,7 +36,6 @@ public class WinNumberController {
     @GetMapping("/search")
     public String searchLottoCountCondition(Model model) {
 
-        LeastDrawNumberAndDateDto leastDrawNumberAndDateDto = winNumberService.getLeastCount();
         model.addAttribute(new WinNumberSearchDto());
         model.addAttribute("leastCount", leastDrawNumberAndDateDto);
 
@@ -50,7 +49,6 @@ public class WinNumberController {
         if (bindingResult.hasErrors()) {
             // 에러 처리
             log.error("에러 발생! = {}", bindingResult);
-            LeastDrawNumberAndDateDto leastDrawNumberAndDateDto = winNumberService.getLeastCount();
             model.addAttribute("leastCount", leastDrawNumberAndDateDto);
             return "searchLotto";
         }

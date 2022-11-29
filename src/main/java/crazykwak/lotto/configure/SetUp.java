@@ -6,6 +6,7 @@ import crazykwak.lotto.win_number.WinNumberRepository;
 import crazykwak.lotto.win_number.dto.WinNumberDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -74,6 +75,15 @@ public class SetUp {
         log.info("저장된 회차 갯수 = {}", winNumbers.size());
 
         return winNumbers;
+    }
+
+    @Bean
+    public LeastDrawNumberAndDateDto setLeastDrawNumberAndDateDto() {
+        Pageable pageable = PageRequest.of(0, 1, Sort.Direction.DESC, "drawNo");
+        Page<WinNumber> find = winNumberRepository.findLastIndex(pageable);
+        List<WinNumber> content = find.getContent();
+        WinNumber winNumber = content.get(0);
+        return new LeastDrawNumberAndDateDto(winNumber.getDrawNoDate(), winNumber.getDrawNo());
     }
 
 }
