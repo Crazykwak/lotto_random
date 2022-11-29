@@ -21,9 +21,6 @@ public class WinNumberService {
     private final WinNumberRepository winNumberRepository;
     private final SetUp setUp;
 
-
-
-
     /**
      * @param count = 검색할 로또 회차
      * @return HistoryNumber 리턴한다.
