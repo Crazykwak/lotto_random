@@ -28,7 +28,6 @@ public class WinNumberController {
                                  Model model) {
 
         WinNumberDto winNumberDto = mapper.WinNumberToWinNumberDto(winNumberRepository.findByDrawNo(drawNo));
-
         model.addAttribute("result", winNumberDto);
 
         return "winNumber";
@@ -38,7 +37,6 @@ public class WinNumberController {
     public String searchLottoCountCondition(Model model) {
 
         LeastDrawNumberAndDateDto leastDrawNumberAndDateDto = winNumberService.getLeastCount();
-
         model.addAttribute(new WinNumberSearchDto());
         model.addAttribute("leastCount", leastDrawNumberAndDateDto);
 
@@ -51,7 +49,10 @@ public class WinNumberController {
                                    Model model) {
         if (bindingResult.hasErrors()) {
             // 에러 처리
-            log.error("에러 발생! = {}", bindingResult.getGlobalError());
+            log.error("에러 발생! = {}", bindingResult);
+            LeastDrawNumberAndDateDto leastDrawNumberAndDateDto = winNumberService.getLeastCount();
+            model.addAttribute("leastCount", leastDrawNumberAndDateDto);
+            return "searchLotto";
         }
 
         HistoryNumber historyNumber = winNumberService.makeHistoryNumber(winNumberSearchDto.getCount());
