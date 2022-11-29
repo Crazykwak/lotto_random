@@ -9,8 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -19,16 +18,41 @@ import java.util.List;
 public class WinNumberService {
 
     private final WinNumberRepository winNumberRepository;
+    private int[] countNumbers = new int[45];
+    private Map<Integer, Integer> mostNumbers = new TreeMap<>();
+    private Map<Integer, Integer> minNumbers = new TreeMap<>();
+
 
     public HistoryNumber makeHistoryNumber(int count) {
 
-        Pageable pageable = PageRequest.of(0, count, Sort.Direction.DESC, "drawNo");
+        List<WinNumber> content = setContent(count);
+        setCountNumbers(content, countNumbers);
+        setTreeMaps();
 
+        return new HistoryNumber(mostNumbers, minNumbers, countNumbers);
+    }
+
+    private List<WinNumber> setContent(int count) {
+        Pageable pageable = PageRequest.of(0, count, Sort.Direction.DESC, "drawNo");
         Page<WinNumber> find = winNumberRepository.findLastIndex(pageable);
         List<WinNumber> content = find.getContent();
+        return content;
+    }
 
-        int[] countNumbers = new int[45];
+    private void setTreeMaps() {
+        int max = Arrays.stream(countNumbers).max().getAsInt();
+        int min = Arrays.stream(countNumbers).min().getAsInt();
+        for (int i = 0; i < countNumbers.length; i++) {
+            int countNumber = countNumbers[i];
+            if (countNumber == max) {
+                mostNumbers.put(i + 1, countNumber);
+            } else if (countNumber == min) {
+                minNumbers.put(i + 1, countNumber);
+            }
+        }
+    }
 
+    private static void setCountNumbers(List<WinNumber> content, int[] countNumbers) {
         content.stream()
                 .forEach(e -> {
                     int winNumber1 = e.getWinNumber1() - 1;
@@ -44,15 +68,8 @@ public class WinNumberService {
                     countNumbers[winNumber4]++;
                     countNumbers[winNumber5]++;
                     countNumbers[winNumber6]++;
+
                 });
-
-        int max = Arrays.stream(countNumbers).max().getAsInt();
-        int min = Arrays.stream(countNumbers).min().getAsInt();
-
-        int[] mostNumbers = Arrays.stream(countNumbers).filter(e -> e == max).toArray();
-        int[] leastNumbers = Arrays.stream(countNumbers).filter(e -> e == min).toArray();
-
-        return new HistoryNumber(mostNumbers, leastNumbers, countNumbers);
     }
 
 

@@ -10,11 +10,21 @@
 
 <div class="container" th:object="${result}">
     <div class="menu-name">
-        <h2>로또 단일 회차 당첨 번호 조회</h2>
+        <h2>로또 단일 회차 당첨 번호 전체 조회</h2>
     </div>
 
     <ul th:each="allNumber : ${result.getAllNumbers()}">
         <li> <span th:text="${allNumberStat.index} + 1 + ' : ' + ${allNumber} + '회'"> </span> </li>
+    </ul>
+
+    <h3>가장 당첨 빈도가 높은 숫자</h3>
+    <ul th:each="mostNumber : ${result.getMostNumbers()}">
+        <li> <span th:text="${mostNumber.getKey()} + ' : ' + ${mostNumber.getValue()} + '회'"> </span> </li>
+    </ul>
+
+    <h3>가장 당첨 빈도가 낮은 숫자</h3>
+    <ul th:each="minNumber : ${result.getMinNumbers()}">
+        <li> <span th:text="${minNumber.getKey()} + ' : ' + ${minNumber.getValue()} + '회'"> </span> </li>
     </ul>
 
 </div>

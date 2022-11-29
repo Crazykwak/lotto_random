@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,6 +47,7 @@ public class WinNumberController {
                                    Model model) {
         if (bindingResult.hasErrors()) {
             // 에러 처리
+            log.error("에러 발생! = {}", bindingResult.getGlobalError());
         }
 
         HistoryNumber historyNumber = winNumberService.makeHistoryNumber(winNumberSearchDto.getCount());
