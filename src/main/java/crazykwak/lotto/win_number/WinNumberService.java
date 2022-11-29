@@ -1,5 +1,7 @@
 package crazykwak.lotto.win_number;
 
+import crazykwak.lotto.configure.SetUp;
+import crazykwak.lotto.win_number.dto.LeastDrawNumberAndDateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,11 +20,20 @@ import java.util.*;
 public class WinNumberService {
 
     private final WinNumberRepository winNumberRepository;
+    private final SetUp setUp;
+
+
     private int[] countNumbers = new int[45];
     private Map<Integer, Integer> mostNumbers = new TreeMap<>();
     private Map<Integer, Integer> minNumbers = new TreeMap<>();
 
-
+    /**
+     * @param count = 검색할 로또 회차
+     * @return HistoryNumber 리턴한다.
+     *     Map<Integer, Integer> mostNumbers;
+     *     Map<Integer, Integer> minNumbers;
+     *     int[] allNumbers;
+     */
     public HistoryNumber makeHistoryNumber(int count) {
 
         List<WinNumber> content = setContent(count);
@@ -30,6 +41,17 @@ public class WinNumberService {
         setTreeMaps();
 
         return new HistoryNumber(mostNumbers, minNumbers, countNumbers);
+    }
+
+    public void refreshWinNumber() {
+        setUp.saveWinNumberForStart();
+    }
+
+    public LeastDrawNumberAndDateDto getLeastCount() {
+        List<WinNumber> winNumbers = setContent(1);
+        WinNumber winNumber = winNumbers.get(0);
+
+        return new LeastDrawNumberAndDateDto(winNumber.getDrawNoDate(), winNumber.getDrawNo());
     }
 
     private List<WinNumber> setContent(int count) {
@@ -71,6 +93,5 @@ public class WinNumberService {
 
                 });
     }
-
 
 }

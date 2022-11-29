@@ -1,5 +1,6 @@
 package crazykwak.lotto.win_number;
 
+import crazykwak.lotto.win_number.dto.LeastDrawNumberAndDateDto;
 import crazykwak.lotto.win_number.dto.WinNumberDto;
 import crazykwak.lotto.win_number.dto.WinNumberSearchDto;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,10 @@ public class WinNumberController {
     @GetMapping("/search")
     public String searchLottoCountCondition(Model model) {
 
+        LeastDrawNumberAndDateDto leastDrawNumberAndDateDto = winNumberService.getLeastCount();
+
         model.addAttribute(new WinNumberSearchDto());
+        model.addAttribute("leastCount", leastDrawNumberAndDateDto);
 
         return "searchLotto";
     }
@@ -54,5 +58,11 @@ public class WinNumberController {
         model.addAttribute("result", historyNumber);
 
         return "winCount";
+    }
+
+    @GetMapping("/refresh")
+    public String refreshWinNumberDB() {
+        winNumberService.refreshWinNumber();
+        return "redirect:search";
     }
 }

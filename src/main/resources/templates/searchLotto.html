@@ -11,6 +11,17 @@
 <div class="container" th:object="${result}">
   <div class="menu-name">
     <h2>로또 당첨 이력 횟수 조회</h2>
+    <div th:object="${leastCount}">
+      <h3>최신 당첨 이력 날짜</h3>
+      <p th:text="*{drawNoDate}">최신 당첨 날짜</p>
+
+      <h3>최신 당첨 회차</h3>
+      <p th:text="${leastCount.drawNo} + '회'">최신 당첨 회차</p>
+    </div>
+  </div>
+
+  <div>
+    <button class="refresh"> 당첨 이력 새로 고침 보턴 </button>
   </div>
 
   <form action="/search" th:object="${winNumberSearchDto}" method="post" >
@@ -22,4 +33,15 @@
 
 </div>
 </body>
+
+<script>
+  const refresh = document.querySelector(".refresh");
+
+  refresh.addEventListener("click", () => {
+    alert("당첨 이력을 확인 하고 최신화 합니다.");
+    location.href='refresh';
+  })
+
+</script>
+
 </html>
