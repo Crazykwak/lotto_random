@@ -47,13 +47,6 @@ public class WinNumberService {
         setUp.saveWinNumberForStart();
     }
 
-    public LeastDrawNumberAndDateDto getLeastCount() {
-        List<WinNumber> winNumbers = setContent(1);
-        WinNumber winNumber = winNumbers.get(0);
-
-        return new LeastDrawNumberAndDateDto(winNumber.getDrawNoDate(), winNumber.getDrawNo());
-    }
-
     private List<WinNumber> setContent(int count) {
         Pageable pageable = PageRequest.of(0, count, Sort.Direction.DESC, "drawNo");
         Page<WinNumber> find = winNumberRepository.findLastIndex(pageable);
