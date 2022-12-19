@@ -5,7 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import crazykwak.lotto.member.entity.Member;
 import crazykwak.lotto.member.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
+import crazykwak.lotto.member.service.MemberService;
 import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,6 @@ import javax.transaction.Transactional;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -29,6 +28,8 @@ class JWTServiceTest {
     JWTService jwtService;
     @Autowired
     MemberRepository memberRepository;
+    @Autowired
+    MemberService memberService;
 
     Logger log = LoggerFactory.getLogger(JWTServiceTest.class);
 
@@ -48,7 +49,7 @@ class JWTServiceTest {
     @Test
     void getAccessToken() {
 
-        Member findMember = memberRepository.findByEmail(member.getEmail());
+        Member findMember = memberService.verifiedMemberByEmail(member.getEmail());
 
         String accessToken = jwtService.getAccessToken(findMember.getEmail(), findMember.getName(), findMember.getId());
         log.info("액세스 토큰 발급 = {}", accessToken);
@@ -73,7 +74,7 @@ class JWTServiceTest {
     @Test
     void isExpired() {
 
-        Member findMember = memberRepository.findByEmail(member.getEmail());
+        Member findMember = memberService.verifiedMemberByEmail(member.getEmail());
         String accessToken = jwtService.getAccessToken(findMember.getEmail(), findMember.getName(), findMember.getId());
 
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(hashCode)).build().verify(accessToken);
