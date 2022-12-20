@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Lotto Number Maker</title>
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .field-error {
+      border-color: #dc3545; color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+
+<h1>회원 가입</h1>
+<form class="memberJoin" action="/join" th:object="${memberJoinDto}" method="post">
+
+  <label for="memberId">이메일</label>
+  <input id="memberId" type="text" th:field="*{email}" th:errorclass="field-error">
+  <br>
+
+  <label for="name">이름</label>
+  <input id="name" type="text" th:field="*{name}" th:errorclass="field-error">
+  <br>
+
+  <label for="password">비밀번호</label>
+  <input id="password" type="password" th:field="*{password}" th:errorclass="field-error">
+
+  <button type="submit">회원 가입</button>
+
+</form>
+
+</body>
+</html>

@@ -1,8 +1,10 @@
 package crazykwak.lotto.member.service;
 
+import crazykwak.lotto.member.dto.MemberJoinDto;
 import crazykwak.lotto.member.entity.Member;
 import crazykwak.lotto.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Member verifiedMemberByEmail(String email) {
 
@@ -18,5 +21,20 @@ public class MemberService {
         // todo 예외 만들기
 
         return member;
+    }
+
+    public void save(MemberJoinDto memberJoinDto) {
+
+        if (memberRepository.findByEmail(memberJoinDto.getEmail()).isPresent()) {
+            throw new RuntimeException("Member Exist");
+        }
+
+        Member member = Member.builder()
+                .email(memberJoinDto.getEmail())
+                .name(memberJoinDto.getName())
+                .password(bCryptPasswordEncoder.encode(memberJoinDto.getPassword()))
+                .build();
+
+        memberRepository.save(member);
     }
 }
