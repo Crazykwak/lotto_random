@@ -11,7 +11,7 @@ import java.util.Date;
 public class JWTService {
 
     private final String secretCode = "tmp";
-    private final int accessTokenExpireTime = 6000000;
+    private final int accessTokenExpireTime = 1000 * 60 * 100;
     private final int refreshTokenExpireTime = 60000000;
 
     public String getAccessToken(String email, String name, Long memberId) {
