@@ -1,6 +1,7 @@
 package crazykwak.lotto.member.controller;
 
 import crazykwak.lotto.member.dto.MemberJoinDto;
+import crazykwak.lotto.member.dto.MemberLoginDto;
 import crazykwak.lotto.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,12 @@ public class MemberController {
         log.info("회원가입 시도");
         memberService.save(memberJoinDto);
         return "redirect:/";
+    }
+
+    @GetMapping("/login")
+    public String viewLogin(Model model) {
+        model.addAttribute(new MemberLoginDto());
+        return "login";
     }
 
 

@@ -38,43 +38,34 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         log.info("로그인 시도");
 
-        try {
-            ObjectMapper om = new ObjectMapper();
-            MemberLoginDto memberLoginDto = om.readValue(request.getInputStream(), MemberLoginDto.class);
-            // todo 예외 뱉기 ㄱ
-            Member member = memberRepository.findByEmail(memberLoginDto.getEmail())
-                    .orElseThrow();
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        log.info("시도 이메일 = {}", email);
+        // todo 예외 뱉기 ㄱ
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("아이디 없음요"));
 
-            if (!bCryptPasswordEncoder.matches(memberLoginDto.getPassword(), member.getPassword())) {
-                log.error("비번이 틀림");
-                throw new RuntimeException();
-            }
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(member.getEmail(), member.getPassword());
-            return authenticationManager.authenticate(authenticationToken);
-
-        } catch (StreamReadException e) {
-            throw new RuntimeException(e);
-        } catch (DatabindException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
+            throw new RuntimeException("비번이 틀림");
         }
 
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
+        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
+        return authenticate;
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-
         log.info("인증 성공 엑세스 토큰 발급");
-
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
         String accessToken = jwtService.getAccessToken(principalDetails.getUsername(), principalDetails.getNickname(), principalDetails.getMember().getId());
         ResponseCookie responseCookie = ResponseCookie.from("AccessToken", accessToken)
                 .httpOnly(true)
                 .sameSite("none")
+                .secure(true)
                 .path("/")
                 .maxAge(60*100)
                 .build();
+        response.addHeader("Set-Cookie", responseCookie.toString());
     }
 }
