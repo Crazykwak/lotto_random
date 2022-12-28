@@ -37,4 +37,11 @@ public class MemberService {
 
         memberRepository.save(member);
     }
+
+    public void save(Member member) {
+        if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
+            throw new RuntimeException("Member Exist");
+        }
+        memberRepository.save(member);
+    }
 }

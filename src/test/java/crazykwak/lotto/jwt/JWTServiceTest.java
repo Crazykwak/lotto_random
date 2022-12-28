@@ -27,8 +27,6 @@ class JWTServiceTest {
     @Autowired
     JWTService jwtService;
     @Autowired
-    MemberRepository memberRepository;
-    @Autowired
     MemberService memberService;
 
     Logger log = LoggerFactory.getLogger(JWTServiceTest.class);
@@ -43,7 +41,7 @@ class JWTServiceTest {
 
     @BeforeEach
     void setMember() {
-        memberRepository.save(member);
+        memberService.save(member);
     }
 
     @Test

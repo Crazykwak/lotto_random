@@ -1,12 +1,13 @@
 package crazykwak.lotto.security;
 
 import crazykwak.lotto.jwt.JWTService;
-import crazykwak.lotto.member.repository.MemberRepository;
+import crazykwak.lotto.member.service.MemberService;
 import crazykwak.lotto.security.filter.JWTAuthenticationFilter;
+import crazykwak.lotto.security.filter.JWTAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,13 +19,14 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Configurable
+@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig {
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JWTService jwtService;
 
     @Bean
@@ -43,11 +45,6 @@ public class SecurityConfig {
         http.apply(new CustomDsl());
 
         return http.build();
-    }
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     private CorsConfigurationSource corsConfig() {
@@ -69,10 +66,10 @@ public class SecurityConfig {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
+            JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager, memberService, jwtService, bCryptPasswordEncoder);
 
-            JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager, memberRepository, jwtService, bCryptPasswordEncoder());
+            builder.addFilter(new JWTAuthorizationFilter(authenticationManager, jwtService, memberService));
             builder.addFilter(jwtAuthenticationFilter);
-
             super.configure(builder);
         }
     }

@@ -7,6 +7,7 @@ import crazykwak.lotto.jwt.JWTService;
 import crazykwak.lotto.member.dto.MemberLoginDto;
 import crazykwak.lotto.member.entity.Member;
 import crazykwak.lotto.member.repository.MemberRepository;
+import crazykwak.lotto.member.service.MemberService;
 import crazykwak.lotto.security.principal.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ import java.io.IOException;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final JWTService jwtService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -42,8 +43,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String password = request.getParameter("password");
         log.info("시도 이메일 = {}", email);
         // todo 예외 뱉기 ㄱ
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("아이디 없음요"));
+        Member member = memberService.verifiedMemberByEmail(email);
 
         if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
             throw new RuntimeException("비번이 틀림");
